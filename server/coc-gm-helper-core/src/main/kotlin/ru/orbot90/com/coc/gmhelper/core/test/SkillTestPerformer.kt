@@ -7,8 +7,8 @@ import ru.orbot90.com.coc.gmhelper.core.dice.DiceRoller
 @Component
 class SkillTestPerformer @Autowired constructor(private val diceRoller: DiceRoller) {
 
-    fun performSkillTest(skillValue: Int, bonusDiceCount: Int, penaltyDiceCount: Int,
-                         targetValue: Int = skillValue): TestResultType {
+    fun performSkillTest(skillValue: Int, targetValue: Int = skillValue,
+                         bonusDiceCount: Int = 0, penaltyDiceCount: Int = 0): TestResultType {
         val rollResult = when {
             bonusDiceCount == 0 && penaltyDiceCount == 0 -> this.diceRoller.rollDice(1, 100)[0]
             bonusDiceCount > penaltyDiceCount -> this.rollWithBonusDice(bonusDiceCount - penaltyDiceCount)
