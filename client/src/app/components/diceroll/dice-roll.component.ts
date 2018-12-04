@@ -12,12 +12,13 @@ export class DiceRollComponent {
 
     public diceType: string = "d100";
     public diceCount: number = 1;
+    public result: object;
 
     constructor(private http: HttpClient) { }
 
     performRoll() {
         let rollDiceString = this.diceCount + "x" + this.diceType
         this.http.post(this.rollDiceServiceUrl, {rollRequest: rollDiceString})
-            .subscribe(result => console.log(result));
+            .subscribe(rollResult => this.result = rollResult);
     }
 }
