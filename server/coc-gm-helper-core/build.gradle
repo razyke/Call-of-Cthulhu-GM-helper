@@ -14,7 +14,11 @@ plugins {
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
-
+jar {
+    manifest {
+        attributes 'Main-Class': 'ru.orbot90.com.coc.gmhelper.core.HelperApplication'
+    }
+}
 
 group 'ru.orbot90'
 version '1.0-SNAPSHOT'
