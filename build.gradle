@@ -8,20 +8,21 @@ buildscript {
 }
 
 plugins {
-    id 'org.jetbrains.kotlin.jvm'
+    id 'org.jetbrains.kotlin.jvm' version '1.2.50'
 }
 
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+
+group 'ru.orbot90'
+version '1.0-SNAPSHOT'
+
 
 jar {
     manifest {
         attributes 'Main-Class': 'ru.orbot90.com.coc.gmhelper.core.HelperApplication'
     }
 }
-
-group 'ru.orbot90'
-version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
