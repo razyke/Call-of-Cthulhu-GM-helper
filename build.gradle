@@ -41,3 +41,8 @@ compileKotlin {
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
+
+task buildDockerImage(dependsOn: bootJar, type: Exec) {
+    workingDir "."
+    commandLine "docker", "build", "-t", "orbot90/cocserver", "."
+}
