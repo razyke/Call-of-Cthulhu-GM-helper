@@ -15,7 +15,9 @@ class PerformTestController {
     @PostMapping
     @CrossOrigin(origins = arrayOf("http://localhost:4200"))
     fun performTest(@RequestBody testRequest: TestRequest) : String {
-        return skillTestPerformer.performSkillTest(testRequest.skillValue, testRequest.bonusDice, testRequest.penaltyDice).name
+        val testResult = skillTestPerformer.performSkillTest(testRequest.skillValue, testRequest.bonusDice,
+                testRequest.penaltyDice).name
+        return "{\"testResult\": \"$testResult\"}"
     }
 
 
