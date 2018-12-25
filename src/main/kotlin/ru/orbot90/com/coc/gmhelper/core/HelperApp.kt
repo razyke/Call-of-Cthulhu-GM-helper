@@ -7,17 +7,16 @@ import io.ktor.features.ContentNegotiation
 import io.ktor.features.DefaultHeaders
 import io.ktor.http.*
 import io.ktor.jackson.jackson
-import io.ktor.request.receive
 import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
+import org.koin.ktor.ext.inject
+import org.koin.standalone.StandAloneContext.startKoin
+import ru.orbot90.com.coc.gmhelper.core.controller.diceRollController
+import ru.orbot90.com.coc.gmhelper.core.controller.performTestController
 import ru.orbot90.com.coc.gmhelper.core.dice.DiceRoller
-import ru.orbot90.com.coc.gmhelper.core.dice.DiceRollerImpl
-import ru.orbot90.com.coc.gmhelper.core.model.RollRequest
-import ru.orbot90.com.coc.gmhelper.core.model.TestRequest
 import ru.orbot90.com.coc.gmhelper.core.test.SkillTestPerformer
-import ru.orbot90.com.coc.gmhelper.core.test.SkillTestPerformerImpl
 
 fun Application.module(){
     install(DefaultHeaders)
@@ -37,31 +36,15 @@ fun Application.module(){
             """.trimMargin(), ContentType.Text.Html)
         }
 
-        val dice = DiceRollerImpl() // for now.. we need KO-IN
+        val diceRoller by inject<DiceRoller>()
+        val skillTestPerform by inject<SkillTestPerformer>()
 
-        diceRollController(dice)
-        performTestController(SkillTestPerformerImpl(dice))
-    }
-}
-
-fun Route.diceRollController(diceRoller: DiceRoller){
-    route("/diceroll"){
-        post("/"){
-            val request = call.receive<RollRequest>()
-            call.respond(diceRoller.rollDice(request.diceCount,request.diceFacesCount))
-        }
-    }
-}
-
-fun Route.performTestController(skillTestPerformer: SkillTestPerformer){
-    post("/performtest"){
-        val request = call.receive<TestRequest>()
-        val testResult = skillTestPerformer.performSkillTest(request.skillValue, request.bonusDice,
-                request.penaltyDice).name
-        call.respond("{\"testResult\": \"$testResult\"}")
+        diceRollController(diceRoller)
+        performTestController(skillTestPerform)
     }
 }
 
 fun main(args: Array<String>) {
+    startKoin(listOf(HelperGmModule))
     embeddedServer(Netty, 8080, module = Application::module).start()
 }

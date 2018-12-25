@@ -1,24 +1,19 @@
 package ru.orbot90.com.coc.gmhelper.core.controller
 
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.*
-import ru.orbot90.com.coc.gmhelper.core.model.TestRequest
-import ru.orbot90.com.coc.gmhelper.core.test.SkillTestPerformer
+import io.ktor.application.call
+import io.ktor.request.receive
+import io.ktor.response.respond
+import io.ktor.routing.Route
+import io.ktor.routing.post
+import io.ktor.routing.route
+import ru.orbot90.com.coc.gmhelper.core.dice.DiceRoller
+import ru.orbot90.com.coc.gmhelper.core.model.RollRequest
 
-@RestController
-@RequestMapping("/performtest")
-class PerformTestController {
-
-    @Autowired
-    lateinit var skillTestPerformer: SkillTestPerformer
-
-    @PostMapping
-    @CrossOrigin(origins = arrayOf("http://localhost:4200"))
-    fun performTest(@RequestBody testRequest: TestRequest) : String {
-        val testResult = skillTestPerformer.performSkillTest(testRequest.skillValue, testRequest.bonusDice,
-                testRequest.penaltyDice).name
-        return "{\"testResult\": \"$testResult\"}"
+fun Route.diceRollController(diceRoller: DiceRoller){
+    route("/diceroll"){
+        post("/"){
+            val request = call.receive<RollRequest>()
+            call.respond(diceRoller.rollDice(request.diceCount,request.diceFacesCount))
+        }
     }
-
-
 }

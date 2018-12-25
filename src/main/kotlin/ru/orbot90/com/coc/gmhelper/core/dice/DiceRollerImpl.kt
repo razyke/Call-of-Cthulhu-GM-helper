@@ -1,9 +1,7 @@
 package ru.orbot90.com.coc.gmhelper.core.dice
 
-import org.springframework.stereotype.Component
 import java.util.*
 
-@Component
 class DiceRollerImpl: DiceRoller {
 
     private val random: Random = Random()
