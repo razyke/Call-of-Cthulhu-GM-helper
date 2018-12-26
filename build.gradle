@@ -6,23 +6,20 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$ktor_version")
+        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.4'
     }
 }
 
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.3.10'
+    id 'org.jetbrains.kotlin.jvm' version '1.3.11'
+    id 'com.github.johnrengelman.shadow' version '4.0.2'
+    id 'application'
 }
 
 group 'ru.orbot90'
 version '1.0-SNAPSHOT'
 
-
-jar {
-    manifest {
-        attributes 'Main-Class': 'ru.orbot90.com.coc.gmhelper.core.HelperApp'
-    }
-}
+mainClassName = "ru.orbot90.com.coc.gmhelper.core.HelperAppKt"
 
 repositories {
     mavenCentral()
@@ -45,7 +42,14 @@ compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
 
-task buildDockerImage(type: Exec) { //TODO: dependsOn: bootJar -> excluded, need to fix docker image
+task buildDockerImage(dependsOn: shadowJar, type: Exec) {
     workingDir "."
     commandLine "docker", "build", "-t", "orbot90/cocserver", "."
+}
+
+shadowJar {
+    archiveName = 'coc-gm-helper-server-1.0-SNAPSHOT.jar'
+    manifest {
+        attributes 'Main-Class': mainClassName
+    }
 }
