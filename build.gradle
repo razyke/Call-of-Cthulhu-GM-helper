@@ -48,7 +48,7 @@ task buildDockerImage(dependsOn: shadowJar, type: Exec) {
 }
 
 shadowJar {
-    archiveName = "coc-gm-helper-server-$version"+".jar"
+    archiveName = "coc-gm-helper-server.jar"
     manifest {
         attributes 'Main-Class': mainClassName
     }
