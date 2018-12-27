@@ -1,11 +1,8 @@
 package ru.orbot90.com.coc.gmhelper.core.test
 
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Component
 import ru.orbot90.com.coc.gmhelper.core.dice.DiceRoller
 
-@Component
-class SkillTestPerformerImpl @Autowired constructor(private val diceRoller: DiceRoller) : SkillTestPerformer {
+class SkillTestPerformerImpl constructor(private val diceRoller: DiceRoller) : SkillTestPerformer {
 
     override fun performSkillTest(skillValue: Int,
                          bonusDiceCount: Int, penaltyDiceCount: Int): TestResultType {
