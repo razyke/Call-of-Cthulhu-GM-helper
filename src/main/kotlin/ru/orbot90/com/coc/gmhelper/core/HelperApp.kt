@@ -2,6 +2,7 @@ package ru.orbot90.com.coc.gmhelper.core
 
 import com.fasterxml.jackson.databind.SerializationFeature
 import io.ktor.application.*
+import io.ktor.features.CORS
 import io.ktor.features.CallLogging
 import io.ktor.features.ContentNegotiation
 import io.ktor.features.DefaultHeaders
@@ -25,6 +26,9 @@ fun Application.module(){
       jackson {
           configure(SerializationFeature.INDENT_OUTPUT, true)
       }
+    }
+    install(CORS) {
+        anyHost()
     }
     install(Routing){
         get("/"){
